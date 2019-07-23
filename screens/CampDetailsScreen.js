@@ -8,25 +8,26 @@ export class CampDetailsScreen extends React.Component {
   }
 
   componentDidMount() {
-    const { _id: campId } = this.props.navigation.getParam("camp")
+    const { id: campId } = this.props.navigation.getParam("camp")
     this.fetchCamp(campId)
   }
 
   async fetchCamp(campId) {
-    const resp = await fetch(`http://localhost:3030/camp/${campId}`)
-    const { data } = await resp.json()
+    const resp = await fetch(`http://localhost:2403/camps/${campId}`)
+    const camp = await resp.json()
+    const { id, name, imageUrl } = camp
     this.setState({
       camp: {
-        _id: 1,
-        name: "Camp Awesome",
-        image: "https://facebook.github.io/react-native/docs/assets/favicon.png",
-        description: "Blah blah blah",
-      },
+        id,
+        name,
+        imageUrl,
+        description: "Blah blah blah"
+      }
     })
   }
 
   goToRegister() {
-    const { _id: campId } = this.props.navigation.getParam("camp")
+    const { id: campId } = this.props.navigation.getParam("camp")
     this.props.navigation.navigate("Register", { campId })
   }
 
@@ -36,23 +37,21 @@ export class CampDetailsScreen extends React.Component {
       <Screen
         footer={
           <Footer>
-            <Button
-              onPress={() => this.goToRegister()}
-              text="Register for this Camp"
-            />
+            <Button onPress={() => this.goToRegister()} text="Register for this Camp" />
           </Footer>
-        }>
-        {camp &&
+        }
+      >
+        {camp && (
           <>
             <Image
               resizeMode="cover"
               style={{ height: 150, marginVertical: 20, width: "100%" }}
-              source={{ uri: camp.image }}
+              source={{ uri: camp.imageUrl }}
             />
             <Text preset="title">{camp.name}</Text>
             <Text>{camp.description}</Text>
           </>
-        }
+        )}
       </Screen>
     )
   }

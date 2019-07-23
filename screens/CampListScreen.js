@@ -12,24 +12,25 @@ export class CampListScreen extends React.Component {
   }
 
   async fetchCamps() {
-    const resp = await fetch("http://localhost:3030/camps")
-    const { data } = await resp.json()
-    this.setState({
-      camps: [
-        { _id: 1, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 2, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 3, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 4, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 5, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 6, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 7, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 8, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-        { _id: 9, name: "Camp Awesome", thumbnail: "https://facebook.github.io/react-native/docs/assets/favicon.png" },
-      ]
+    const sid = ""
+    const resp = await fetch("http://localhost:2403/camps", {
+      ...(sid && { Cookie: `sid=${sid}` })
     })
+    const camps = await resp.json()
+    this.setState({ camps })
   }
 
   goToDetails(camp) {
+    // fetch("http://localhost:2403/purchases", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     items: ["3", "4"]
+    //     // userId: "345"
+    //   })
+    // })
     this.props.navigation.navigate("Camp", { camp })
   }
 
@@ -46,21 +47,23 @@ export class CampListScreen extends React.Component {
           <Footer>
             <Button onPress={() => this.goToLogin()} text="I'm already registered" />
           </Footer>
-        }>
-        {camps.length > 0
-          ? <FlatList
-              data={camps}
-              renderItem={({ item }) => (
-                <TouchableOpacity style={{ flex: 0.5 }} onPress={() => this.goToDetails(item)}>
-                  <Tile title={item.name} imageUri={item.thumbnail} />
-                </TouchableOpacity>
-              )}
-              keyExtractor={item => item._id}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-            />
-          : <Text>Loading...</Text>
         }
+      >
+        {camps.length > 0 ? (
+          <FlatList
+            data={camps}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={{ flex: 0.5 }} onPress={() => this.goToDetails(item)}>
+                <Tile title={item.name} imageUri={item.imageUrl} />
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <Text>Loading...</Text>
+        )}
       </Screen>
     )
   }

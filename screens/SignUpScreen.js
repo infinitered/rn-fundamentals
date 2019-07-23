@@ -5,16 +5,33 @@ export class SignUpScreen extends React.Component {
   state = {
     email: "",
     password: "",
-    guardianName: "",
-    childName: "",
+    parentName: "",
+    childName: ""
   }
 
   handleSignUp() {
-    this.props.navigation.navigate("Main")
+    const { navigation } = this.props
+    const { email, password, parentName, childName } = this.state
+    const campId = navigation.getParam("campId")
+    fetch("http://localhost:2403/parents", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        username: email,
+        password,
+        name: parentName,
+        childName,
+        registeredCamp: campId
+        // userId: "345"
+      })
+    })
+    navigation.navigate("Main")
   }
 
   render() {
-    const { email, password, guardianName, childName } = this.state
+    const { email, password, parentName, childName } = this.state
     return (
       <Screen
         contentContainerStyle={{ justifyContent: "center" }}
@@ -23,7 +40,8 @@ export class SignUpScreen extends React.Component {
           <Footer>
             <Button onPress={() => this.handleSignUp()} text="Sign Up" />
           </Footer>
-        }>
+        }
+      >
         <TextField
           value={email}
           onChangeText={email => this.setState({ email })}
@@ -36,13 +54,11 @@ export class SignUpScreen extends React.Component {
           onChangeText={password => this.setState({ password })}
           placeholder="Password"
           secureTextEntry
-          returnKeyType="done"
-          onSubmitEditing={() => this.handleSignIn()}
         />
         <TextField
-          value={guardianName}
-          onChangeText={guardianName => this.setState({ guardianName })}
-          placeholder="Guardian Name"
+          value={parentName}
+          onChangeText={parentName => this.setState({ parentName })}
+          placeholder="Your Name"
           autoCorrect={false}
         />
         <TextField
@@ -50,6 +66,8 @@ export class SignUpScreen extends React.Component {
           onChangeText={childName => this.setState({ childName })}
           placeholder="Child Name"
           autoCorrect={false}
+          returnKeyType="done"
+          onSubmitEditing={() => this.handleSignUp()}
         />
       </Screen>
     )
