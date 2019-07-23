@@ -1,4 +1,5 @@
 import { types } from "mobx-state-tree"
+import ViewShot from "react-native-view-shot"
 
 const Item = types.model({
   title: "",
