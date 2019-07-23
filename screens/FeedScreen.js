@@ -2,8 +2,9 @@ import React from "react"
 import { FlatList, View, Modal, Image } from "react-native"
 import { Post, Screen, Text, Footer, Button } from "../components"
 import { TextInput } from "react-native-gesture-handler"
+import { observer, inject } from "mobx-react"
 
-export class FeedScreen extends React.Component {
+export class FeedScreen2 extends React.Component {
   state = {
     posts: [],
     showModal: false,
@@ -18,6 +19,7 @@ export class FeedScreen extends React.Component {
 
   componentDidMount() {
     this.fetchPosts()
+    console.log("HEYYY", this.props.rootStore.total)
   }
 
   async fetchPosts() {
@@ -32,21 +34,22 @@ export class FeedScreen extends React.Component {
     this.setState(state => ({ showModal: !state.showModal, selectedPost }))
   }
 
-  handlePurchase = async () => {
-    fetch("http://localhost:2403/parents/4cf263a813894806", {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Cookie:
-          "sid=0bda592f6fbbde46122a5eefe15e650d07eebede5a7f6a33c3917804725c4e3d0871f4b2a812e1fb915db53a45ca6c9bb62388882c6ec665752c1f6530f64849"
-      },
-      body: JSON.stringify({
-        ...this.state.selectedPost
-      })
-    })
-      .then(r => r.json())
-      .then(r => console.log("RESPONSE", r))
+  addPostToCart = () => {
+    this.props.rootStore.addPostToCart(this.state.selectedPost)
+    // fetch("http://localhost:2403/parents/4cf263a813894806", {
+    //   method: "PUT",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //     Cookie:
+    //       "sid=0bda592f6fbbde46122a5eefe15e650d07eebede5a7f6a33c3917804725c4e3d0871f4b2a812e1fb915db53a45ca6c9bb62388882c6ec665752c1f6530f64849"
+    //   },
+    //   body: JSON.stringify({
+    //     ...this.state.selectedPost
+    //   })
+    // })
+    //   .then(r => r.json())
+    //   .then(r => console.log("RESPONSE", r))
   }
 
   renderModal = () => {
@@ -59,7 +62,7 @@ export class FeedScreen extends React.Component {
           contentContainerStyle={{ justifyContent: "center", flex: 1 }}
           footer={
             <Footer>
-              <Button onPress={this.handlePurchase} text="Purchase this post" />
+              <Button onPress={this.addPostToCart} text="Add post to cart" />
             </Footer>
           }
         >
@@ -155,3 +158,5 @@ export class FeedScreen extends React.Component {
     )
   }
 }
+
+export const FeedScreen = inject("rootStore")(observer(FeedScreen2))
