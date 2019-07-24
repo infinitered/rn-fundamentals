@@ -15,15 +15,7 @@ export class CampDetailsScreen extends React.Component {
   async fetchCamp(campId) {
     const resp = await fetch(`http://localhost:2403/camps/${campId}`)
     const camp = await resp.json()
-    const { id, name, imageUrl } = camp
-    this.setState({
-      camp: {
-        id,
-        name,
-        imageUrl,
-        description: "Blah blah blah"
-      }
-    })
+    this.setState({ camp })
   }
 
   goToRegister() {

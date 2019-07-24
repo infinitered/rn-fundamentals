@@ -38,7 +38,6 @@ export class SignIn extends React.Component {
         } else {
           setToken(response.id)
           setUserId(response.uid)
-          console.log(response)
           this.props.navigation.navigate("Main")
         }
       })

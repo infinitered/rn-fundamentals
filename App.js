@@ -18,7 +18,6 @@ import { Store } from "./store"
 import { Provider } from "mobx-react"
 
 const rootStore = Store.create()
-console.log("STORE", rootStore)
 
 const defaultNavigationOptions = {
   headerStyle: {

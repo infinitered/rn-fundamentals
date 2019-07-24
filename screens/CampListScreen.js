@@ -10,7 +10,6 @@ class CampList extends React.Component {
 
   componentDidMount() {
     this.fetchCamps()
-    console.log(this.props.rootStore)
   }
 
   async fetchCamps() {
@@ -23,16 +22,6 @@ class CampList extends React.Component {
   }
 
   goToDetails(camp) {
-    // fetch("http://localhost:2403/purchases", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     items: ["3", "4"]
-    //     // userId: "345"
-    //   })
-    // })
     this.props.navigation.navigate("Camp", { camp })
   }
 
@@ -48,7 +37,7 @@ class CampList extends React.Component {
         loading={!camps.length > 0}
         footer={
           <Footer>
-            <Button onPress={() => this.goToLogin()} text="I'm already registered" />
+            <Button onPress={() => this.goToLogin()} text="Sign In" />
           </Footer>
         }
       >
