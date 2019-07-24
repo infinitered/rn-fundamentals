@@ -10,8 +10,9 @@ class CampList extends React.Component {
 
   componentDidMount() {
     AsyncStorage.getItem("userId", (err, userId) => {
-      if (err) this.fetchCamps()
-      if (userId) {
+      if (err) {
+        this.fetchCamps()
+      } else if (userId) {
         const { setUserId } = this.props.rootStore
         setUserId(userId)
         this.props.navigation.navigate("Main")
