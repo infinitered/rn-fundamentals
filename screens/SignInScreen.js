@@ -1,5 +1,5 @@
 import React from "react"
-import { TouchableOpacity } from "react-native"
+import { TouchableOpacity, AsyncStorage } from "react-native"
 import { Button, Footer, Screen, TextField } from "../components"
 import { Ionicons } from "@expo/vector-icons"
 import { observer, inject } from "mobx-react"
@@ -38,6 +38,7 @@ export class SignIn extends React.Component {
         } else {
           setToken(response.id)
           setUserId(response.uid)
+          AsyncStorage.multiSet([["token", response.id], ["userId", response.uid]])
           this.props.navigation.navigate("Main")
         }
       })

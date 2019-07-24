@@ -1,5 +1,5 @@
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList, TouchableOpacity, AsyncStorage } from "react-native"
 import { Button, Footer, Screen, Tile } from "../components"
 import { observer, inject } from "mobx-react"
 
@@ -9,14 +9,23 @@ class CampList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchCamps()
+    AsyncStorage.multiGet(["token", "userId"], (err, result) => {
+      if (err) this.fetchCamps()
+      const token = result[0][1]
+      const userId = result[1][1]
+      if (token) {
+        const { setToken, setUserId } = this.props.rootStore
+        setToken(token)
+        setUserId(userId)
+        this.props.navigation.navigate("Main")
+      } else {
+        this.fetchCamps()
+      }
+    })
   }
 
   async fetchCamps() {
-    const sid = ""
-    const resp = await fetch("http://localhost:2403/camps", {
-      ...(sid && { Cookie: `sid=${sid}` })
-    })
+    const resp = await fetch("http://localhost:2403/camps")
     const camps = await resp.json()
     this.setState({ camps })
   }

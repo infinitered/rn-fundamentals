@@ -1,6 +1,6 @@
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
-import { Screen, Tile } from "../components"
+import { FlatList, TouchableOpacity, AsyncStorage } from "react-native"
+import { Screen, Tile, Button, Footer } from "../components"
 import { observer, inject } from "mobx-react"
 
 export class Purchases extends React.Component {
@@ -22,6 +22,12 @@ export class Purchases extends React.Component {
     this.setState({ purchases })
   }
 
+  handleLogout = () => {
+    fetch("http://localhost:2403/parents/logout")
+    AsyncStorage.clear()
+    this.props.navigation.navigate("Camps")
+  }
+
   render() {
     const { purchases } = this.state
     return (
@@ -37,6 +43,9 @@ export class Purchases extends React.Component {
           numColumns={2}
           showsVerticalScrollIndicator={false}
         />
+        <Footer>
+          <Button onPress={this.handleLogout} text="Logout" />
+        </Footer>
       </Screen>
     )
   }
