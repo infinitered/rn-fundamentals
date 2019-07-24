@@ -1,8 +1,9 @@
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
-import { Button, Footer, Screen, Tile } from "../components"
+import { Screen, Tile } from "../components"
+import { observer, inject } from "mobx-react"
 
-export class PurchasesScreen extends React.Component {
+export class Purchases extends React.Component {
   state = {
     purchases: []
   }
@@ -12,31 +13,23 @@ export class PurchasesScreen extends React.Component {
   }
 
   async fetchPurchases() {
-    const sid =
-      "86e399b2961a6120b5eb884d72c2e8bdae105cc4593f40a731cfc4ce6d076ae91295e0814ff3dc0eb1f8a747380155092cbfc65840229051a10149236868fbb0"
-    const resp = await fetch("http://localhost:2403/purchases", {
-      Cookie: `sid=${sid}`
+    const { token, userId } = this.props.rootStore
+    const resp = await fetch(`http://localhost:2403/purchases?userId=${userId}`, {
+      Cookie: `sid=${token}`
     })
-    const purchases = await resp.json()
+    const response = await resp.json()
+    const purchases = response.map(r => r.purchasedPosts).flat() // to combine nested arrays into one purchases array
     this.setState({ purchases })
   }
 
   render() {
     const { purchases } = this.state
     return (
-      <Screen
-        loading={!purchases.length > 0}
-        fixed
-        footer={
-          <Footer>
-            <Button onPress={() => this.goToLogin()} text="I'm already registered" />
-          </Footer>
-        }
-      >
+      <Screen loading={!purchases.length > 0} fixed>
         <FlatList
           data={purchases}
           renderItem={({ item }) => (
-            <TouchableOpacity style={{ flex: 0.5 }} onPress={() => this.goToDetails(item)}>
+            <TouchableOpacity style={{ flex: 0.5 }} onPress={() => alert(item.title)}>
               <Tile title={item.title} imageUri={item.imageUrl} />
             </TouchableOpacity>
           )}
@@ -48,3 +41,5 @@ export class PurchasesScreen extends React.Component {
     )
   }
 }
+
+export const PurchasesScreen = inject("rootStore")(observer(Purchases))

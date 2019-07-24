@@ -4,18 +4,20 @@ import { Post, Screen, Text, Footer, Button } from "../components"
 import { TextInput } from "react-native-gesture-handler"
 import { observer, inject } from "mobx-react"
 
-class FeedScreen2 extends React.Component {
+const DEFAULT_SELECTED_POST = {
+  size: `4" x 6"`,
+  quantity: "1",
+  price: 0,
+  imageUrl: "",
+  title: "",
+  id: ""
+}
+
+class Feed extends React.Component {
   state = {
     posts: [],
     showModal: false,
-    selectedPost: {
-      size: `4" x 6"`,
-      quantity: "1",
-      price: 0,
-      imageUrl: "",
-      title: "",
-      id: ""
-    }
+    selectedPost: DEFAULT_SELECTED_POST
   }
 
   componentDidMount() {
@@ -36,7 +38,7 @@ class FeedScreen2 extends React.Component {
 
   addPostToCart = () => {
     this.props.rootStore.addPostToCart(this.state.selectedPost)
-    this.setState({ showModal: false })
+    this.setState({ showModal: false, selectedPost: DEFAULT_SELECTED_POST })
   }
 
   renderModal = () => {
@@ -47,11 +49,6 @@ class FeedScreen2 extends React.Component {
           safeAreaStyle={{ backgroundColor: "#000000a1" }}
           style={{ flex: 1, backgroundColor: "#000000a1" }}
           contentContainerStyle={{ justifyContent: "center", flex: 1 }}
-          footer={
-            <Footer>
-              <Button onPress={this.addPostToCart} text="Add post to cart" />
-            </Footer>
-          }
         >
           <Text
             style={{ fontSize: 40, color: "lightgray", position: "absolute", top: 20, right: 20 }}
@@ -61,7 +58,7 @@ class FeedScreen2 extends React.Component {
           </Text>
           <View
             style={{
-              height: "30%",
+              height: 300,
               width: "90%",
               borderRadius: 5,
               justifyContent: "center",
@@ -118,6 +115,9 @@ class FeedScreen2 extends React.Component {
               </View>
             </View>
           </View>
+          <Footer>
+            <Button onPress={this.addPostToCart} text="Add post to cart" />
+          </Footer>
         </Screen>
       </Modal>
     )
@@ -151,4 +151,4 @@ class FeedScreen2 extends React.Component {
   }
 }
 
-export const FeedScreen = inject("rootStore")(observer(FeedScreen2))
+export const FeedScreen = inject("rootStore")(observer(Feed))

@@ -3,13 +3,14 @@ import { FlatList, TouchableOpacity } from "react-native"
 import { Button, Footer, Screen, Tile } from "../components"
 import { observer, inject } from "mobx-react"
 
-class CampListScreen2 extends React.Component {
+class CampList extends React.Component {
   state = {
     camps: []
   }
 
   componentDidMount() {
     this.fetchCamps()
+    console.log(this.props.rootStore)
   }
 
   async fetchCamps() {
@@ -67,4 +68,4 @@ class CampListScreen2 extends React.Component {
   }
 }
 
-export const CampListScreen = inject("rootStore")(observer(CampListScreen2))
+export const CampListScreen = inject("rootStore")(observer(CampList))

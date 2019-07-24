@@ -2,8 +2,9 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { Button, Footer, Screen, TextField } from "../components"
 import { Ionicons } from "@expo/vector-icons"
+import { observer, inject } from "mobx-react"
 
-export class SignInScreen extends React.Component {
+export class SignIn extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.goBack(null)} style={{ paddingHorizontal: 16 }}>
@@ -19,6 +20,7 @@ export class SignInScreen extends React.Component {
 
   handleSignIn() {
     const { email, password } = this.state
+    const { setToken, setUserId } = this.props.rootStore
     fetch("http://localhost:2403/parents/login", {
       method: "POST",
       headers: {
@@ -34,6 +36,8 @@ export class SignInScreen extends React.Component {
         if (response.message) {
           alert(response.message)
         } else {
+          setToken(response.id)
+          setUserId(response.uid)
           console.log(response)
           this.props.navigation.navigate("Main")
         }
@@ -72,3 +76,5 @@ export class SignInScreen extends React.Component {
     )
   }
 }
+
+export const SignInScreen = inject("rootStore")(observer(SignIn))

@@ -11,7 +11,9 @@ const Item = types.model({
 
 export const Store = types
   .model({
-    cartItems: types.array(Item)
+    cartItems: types.array(Item),
+    token: types.maybe(types.string),
+    userId: types.maybe(types.string)
   })
   .views(self => ({
     get total() {
@@ -25,5 +27,14 @@ export const Store = types
   .actions(self => ({
     addPostToCart(item) {
       self.cartItems.push(item)
+    },
+    setToken(token) {
+      self.token = token
+    },
+    setUserId(userId) {
+      self.userId = userId
+    },
+    clearCart() {
+      self.cartItems.replace([])
     }
   }))

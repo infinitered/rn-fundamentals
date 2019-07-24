@@ -1,28 +1,36 @@
 import React from "react"
 import { FlatList, View } from "react-native"
-import { Post, Screen, Footer, Button } from "../components"
+import { Post, Screen, Footer, Button, Text } from "../components"
 import { observer, inject } from "mobx-react"
 
-class CartScreen2 extends React.Component {
+class Cart extends React.Component {
   handleCheckout = post => {
+    const { token, cartItems } = this.props.rootStore
     fetch("http://localhost:2403/purchases", {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie:
-          "sid=29b80fad4392837a89ebda5ade817aaf20d34e4e17878d7dfd157202eae185e2b66623114f0309df3192f96c1f7233269dfdf08a113cae493824ad03c607da82"
+        Cookie: `sid=${token}`
       },
-      body: JSON.stringify({ purchasedPosts: this.props.rootStore.cartItems })
+      body: JSON.stringify({ purchasedPosts: cartItems })
     })
-      .then(r => r.json())
-      .then(r => console.log("RESPONSE", r))
+      .then(r => (r.ok ? r.json() : alert("There was a problem processing your order")))
+      .then(r => this.props.rootStore.clearCart())
   }
 
   render() {
     const { cartItems, total } = this.props.rootStore
+    const noItems = !cartItems.length > 0
+    if (noItems) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>You have nothing in your cart</Text>
+        </View>
+      )
+    }
     return (
-      <Screen fixed loading={!cartItems.length > 0}>
+      <Screen fixed>
         <FlatList
           contentContainerStyle={{ paddingVertical: 20 }}
           data={cartItems}
@@ -49,4 +57,4 @@ class CartScreen2 extends React.Component {
   }
 }
 
-export const CartScreen = inject("rootStore")(observer(CartScreen2))
+export const CartScreen = inject("rootStore")(observer(Cart))
