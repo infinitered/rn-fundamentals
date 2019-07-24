@@ -1,5 +1,13 @@
 import React from "react"
-import { KeyboardAvoidingView, SafeAreaView, ScrollView, StatusBar, StyleSheet } from "react-native"
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View,
+  ActivityIndicator
+} from "react-native"
 
 const styles = StyleSheet.create({
   container: {
@@ -9,12 +17,24 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "stretch",
     paddingHorizontal: 16
+  },
+  loader: {
+    backgroundColor: "#f2f2f2",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   }
 })
 
 export const Screen = props => {
-  console
-  const { children, fixed, footer, style, contentContainerStyle, safeAreaStyle } = props
+  const { children, fixed, footer, style, contentContainerStyle, safeAreaStyle, loading } = props
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#3B8686" />
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={{ flex: 1, ...safeAreaStyle }}>
       <StatusBar barStyle="light-content" />

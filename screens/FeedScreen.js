@@ -4,13 +4,14 @@ import { Post, Screen, Text, Footer, Button } from "../components"
 import { TextInput } from "react-native-gesture-handler"
 import { observer, inject } from "mobx-react"
 
-export class FeedScreen2 extends React.Component {
+class FeedScreen2 extends React.Component {
   state = {
     posts: [],
     showModal: false,
     selectedPost: {
       size: `4" x 6"`,
       quantity: "1",
+      price: 0,
       imageUrl: "",
       title: "",
       id: ""
@@ -19,7 +20,6 @@ export class FeedScreen2 extends React.Component {
 
   componentDidMount() {
     this.fetchPosts()
-    console.log("HEYYY", this.props.rootStore.total)
   }
 
   async fetchPosts() {
@@ -29,31 +29,18 @@ export class FeedScreen2 extends React.Component {
   }
 
   handleSelectPost = post => {
-    const { imageUrl, title, id } = post
-    const selectedPost = { ...this.state.selectedPost, title, imageUrl, id }
+    const { imageUrl, title, id, price } = post
+    const selectedPost = { ...this.state.selectedPost, title, imageUrl, id, price }
     this.setState(state => ({ showModal: !state.showModal, selectedPost }))
   }
 
   addPostToCart = () => {
     this.props.rootStore.addPostToCart(this.state.selectedPost)
-    // fetch("http://localhost:2403/parents/4cf263a813894806", {
-    //   method: "PUT",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //     Cookie:
-    //       "sid=0bda592f6fbbde46122a5eefe15e650d07eebede5a7f6a33c3917804725c4e3d0871f4b2a812e1fb915db53a45ca6c9bb62388882c6ec665752c1f6530f64849"
-    //   },
-    //   body: JSON.stringify({
-    //     ...this.state.selectedPost
-    //   })
-    // })
-    //   .then(r => r.json())
-    //   .then(r => console.log("RESPONSE", r))
+    this.setState({ showModal: false })
   }
 
   renderModal = () => {
-    const { quantity, imageUrl, title } = this.state.selectedPost
+    const { quantity, imageUrl, title, price } = this.state.selectedPost
     return (
       <Modal animationType="slide" transparent>
         <Screen
@@ -88,7 +75,12 @@ export class FeedScreen2 extends React.Component {
               style={{ width: "100%", height: "50%", borderRadius: 5 }}
               source={{ uri: imageUrl }}
             />
-            <Text style={{ marginTop: 5 }}>{title}</Text>
+            <View style={{ marginTop: 5, flexDirection: "row", justifyContent: "space-around" }}>
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>{title}</Text>
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                ${(price * quantity).toString()}
+              </Text>
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -119,7 +111,9 @@ export class FeedScreen2 extends React.Component {
                     paddingLeft: 5
                   }}
                   value={quantity}
-                  onChangeText={quantity => this.setState({ selectedPost: { quantity } })}
+                  onChangeText={quantity =>
+                    this.setState(state => ({ selectedPost: { ...state.selectedPost, quantity } }))
+                  }
                 />
               </View>
             </View>
@@ -132,27 +126,25 @@ export class FeedScreen2 extends React.Component {
   render() {
     const { posts, showModal } = this.state
     return (
-      <Screen fixed>
-        {posts.length > 0 ? (
-          <FlatList
-            contentContainerStyle={{ paddingVertical: 20 }}
-            data={posts}
-            ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-            renderItem={({ item }) => (
-              <Post
-                title={item.title}
-                imageUrl={item.imageUrl}
-                actionText="Purchase"
-                onPress={() => this.handleSelectPost(item)}
-                style={{ borderWidth: 1, borderColor: "lightgray", padding: 20, borderRadius: 5 }}
-              />
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
-        ) : (
-          <Text>Loading...</Text>
-        )}
+      <Screen fixed loading={!posts.length > 0}>
+        <FlatList
+          contentContainerStyle={{ paddingVertical: 20 }}
+          data={posts}
+          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+          renderItem={({ item }) => (
+            <Post
+              title={item.title}
+              imageUrl={item.imageUrl}
+              quantity={item.quantity}
+              price={item.price}
+              actionText="Purchase"
+              onPress={() => this.handleSelectPost(item)}
+              style={{ borderWidth: 1, borderColor: "lightgray", padding: 20, borderRadius: 5 }}
+            />
+          )}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+        />
         {showModal && this.renderModal()}
       </Screen>
     )

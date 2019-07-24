@@ -16,12 +16,13 @@ const styles = StyleSheet.create({
   }
 })
 
-export const Post = ({ title, imageUrl, actionText, onPress, style }) => (
+export const Post = ({ title, imageUrl, actionText, onPress, style, quantity, total }) => (
   <View style={style}>
     <Image resizeMode="cover" style={styles.image} source={{ uri: imageUrl }} />
     <View style={styles.content}>
       <Text text={title} />
-      <Button text={actionText} onPress={onPress} />
+      {actionText && <Button text={actionText} onPress={onPress} />}
+      {quantity && <Text style={{ fontSize: 16, fontWeight: "bold" }}>Quantity: {quantity}</Text>}
     </View>
   </View>
 )

@@ -1,5 +1,5 @@
 import React from "react"
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet } from "react-native"
 import {
   createAppContainer,
   createStackNavigator,
@@ -10,7 +10,9 @@ import {
   CampListScreen,
   FeedScreen,
   SignInScreen,
-  SignUpScreen
+  SignUpScreen,
+  CartScreen,
+  PurchasesScreen
 } from "./screens"
 import { Store } from "./store"
 import { Provider } from "mobx-react"
@@ -26,12 +28,6 @@ const defaultNavigationOptions = {
   headerTitle: "CampMinder",
   params: { rootStore }
 }
-
-const createPlaceholderScreen = text => () => (
-  <View style={styles.container}>
-    <Text>{text}</Text>
-  </View>
-)
 
 const AppNavigator = createStackNavigator(
   {
@@ -64,15 +60,15 @@ const AppNavigator = createStackNavigator(
       ),
       Cart: createStackNavigator(
         {
-          CartScreen: createPlaceholderScreen("Cart")
+          CartScreen
         },
         {
           defaultNavigationOptions
         }
       ),
-      Settings: createStackNavigator(
+      Purchases: createStackNavigator(
         {
-          SettingsScreen: createPlaceholderScreen("Settings")
+          PurchasesScreen
         },
         {
           defaultNavigationOptions

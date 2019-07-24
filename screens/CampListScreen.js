@@ -1,6 +1,6 @@
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
-import { Button, Footer, Screen, Text, Tile } from "../components"
+import { Button, Footer, Screen, Tile } from "../components"
 import { observer, inject } from "mobx-react"
 
 class CampListScreen2 extends React.Component {
@@ -44,27 +44,24 @@ class CampListScreen2 extends React.Component {
     return (
       <Screen
         fixed
+        loading={!camps.length > 0}
         footer={
           <Footer>
             <Button onPress={() => this.goToLogin()} text="I'm already registered" />
           </Footer>
         }
       >
-        {camps.length > 0 ? (
-          <FlatList
-            data={camps}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={{ flex: 0.5 }} onPress={() => this.goToDetails(item)}>
-                <Tile title={item.name} imageUri={item.imageUrl} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={item => item.id}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-          />
-        ) : (
-          <Text>Loading...</Text>
-        )}
+        <FlatList
+          data={camps}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={{ flex: 0.5 }} onPress={() => this.goToDetails(item)}>
+              <Tile title={item.name} imageUri={item.imageUrl} />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+        />
       </Screen>
     )
   }

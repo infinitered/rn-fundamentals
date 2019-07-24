@@ -1,10 +1,12 @@
 import { types } from "mobx-state-tree"
-import ViewShot from "react-native-view-shot"
 
 const Item = types.model({
   title: "",
   imageUrl: "",
-  price: 1
+  price: 1,
+  quantity: "0",
+  id: "",
+  price: 0
 })
 
 export const Store = types
@@ -13,7 +15,10 @@ export const Store = types
   })
   .views(self => ({
     get total() {
-      const sum = self.cartItems.reduce((acc, item) => acc + Number(item.price), 0)
+      const sum = self.cartItems.reduce(
+        (acc, item) => acc + Number(item.price) * Number(item.quantity),
+        0
+      )
       return String(sum)
     }
   }))
