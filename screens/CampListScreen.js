@@ -9,13 +9,10 @@ class CampList extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.multiGet(["token", "userId"], (err, result) => {
+    AsyncStorage.getItem("userId", (err, userId) => {
       if (err) this.fetchCamps()
-      const token = result[0][1]
-      const userId = result[1][1]
-      if (token) {
-        const { setToken, setUserId } = this.props.rootStore
-        setToken(token)
+      if (userId) {
+        const { setUserId } = this.props.rootStore
         setUserId(userId)
         this.props.navigation.navigate("Main")
       } else {

@@ -1,6 +1,6 @@
 import React from "react"
-import { FlatList, TouchableOpacity, AsyncStorage } from "react-native"
-import { Screen, Tile, Button, Footer } from "../components"
+import { FlatList, TouchableOpacity, AsyncStorage, View } from "react-native"
+import { Screen, Tile, Button, Footer, Text } from "../components"
 import { observer, inject } from "mobx-react"
 
 export class Purchases extends React.Component {
@@ -13,10 +13,8 @@ export class Purchases extends React.Component {
   }
 
   async fetchPurchases() {
-    const { token, userId } = this.props.rootStore
-    const resp = await fetch(`http://localhost:2403/purchases?userId=${userId}`, {
-      Cookie: `sid=${token}`
-    })
+    const { userId } = this.props.rootStore
+    const resp = await fetch(`http://localhost:2403/purchases?userId=${userId}`)
     const response = await resp.json()
     const purchases = response.map(r => r.purchasedPosts).flat() // to combine nested arrays into one purchases array
     this.setState({ purchases })
@@ -30,8 +28,16 @@ export class Purchases extends React.Component {
 
   render() {
     const { purchases } = this.state
+    const noPurchases = !purchases.length > 0
+    if (noPurchases) {
+      return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>You have purchased any posts yet</Text>
+        </View>
+      )
+    }
     return (
-      <Screen loading={!purchases.length > 0} fixed>
+      <Screen fixed>
         <FlatList
           data={purchases}
           renderItem={({ item }) => (

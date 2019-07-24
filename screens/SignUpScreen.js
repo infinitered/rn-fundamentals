@@ -1,7 +1,9 @@
 import React from "react"
+import { AsyncStorage } from "react-native"
 import { Button, Footer, Screen, TextField } from "../components"
+import { observer, inject } from "mobx-react"
 
-export class SignUpScreen extends React.Component {
+export class SignUp extends React.Component {
   state = {
     email: "",
     password: "",
@@ -10,7 +12,8 @@ export class SignUpScreen extends React.Component {
   }
 
   handleSignUp() {
-    const { navigation } = this.props
+    const { navigation, rootStore } = this.props
+    const { setUserId } = rootStore
     const { email, password, parentName, childName } = this.state
     const campId = navigation.getParam("campId")
     fetch("http://localhost:2403/parents", {
@@ -24,10 +27,18 @@ export class SignUpScreen extends React.Component {
         name: parentName,
         childName,
         registeredCamp: campId
-        // userId: "345"
       })
     })
-    navigation.navigate("Main")
+      .then(r => r.json())
+      .then(response => {
+        if (response.message) {
+          alert(response.message)
+        } else {
+          setUserId(response.id)
+          AsyncStorage.setItem("userId", response.id)
+          navigation.navigate("Main")
+        }
+      })
   }
 
   render() {
@@ -73,3 +84,5 @@ export class SignUpScreen extends React.Component {
     )
   }
 }
+
+export const SignUpScreen = inject("rootStore")(observer(SignUp))
