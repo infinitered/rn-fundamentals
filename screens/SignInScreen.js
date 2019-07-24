@@ -18,9 +18,9 @@ export class SignIn extends React.Component {
     password: "12345678"
   }
 
-  handleSignIn() {
+  handleSignIn = () => {
     const { email, password } = this.state
-    const { setToken, setUserId } = this.props.rootStore
+    const { setUserId } = this.props.rootStore
     fetch("http://localhost:2403/parents/login", {
       method: "POST",
       headers: {
@@ -36,9 +36,8 @@ export class SignIn extends React.Component {
         if (response.message) {
           alert(response.message)
         } else {
-          setToken(response.id)
           setUserId(response.uid)
-          AsyncStorage.multiSet([["token", response.id], ["userId", response.uid]])
+          AsyncStorage.setItem("userId", response.uid)
           this.props.navigation.navigate("Main")
         }
       })

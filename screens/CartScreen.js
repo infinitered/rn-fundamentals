@@ -5,18 +5,21 @@ import { observer, inject } from "mobx-react"
 
 class Cart extends React.Component {
   handleCheckout = post => {
-    const { token, cartItems } = this.props.rootStore
+    const { navigation, rootStore } = this.props
+    const { userId, cartItems } = rootStore
     fetch("http://localhost:2403/purchases", {
       method: "POST",
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
-        Cookie: `sid=${token}`
+        Authorization: userId
       },
       body: JSON.stringify({ purchasedPosts: cartItems })
     })
       .then(r => (r.ok ? r.json() : alert("There was a problem processing your order")))
-      .then(r => this.props.rootStore.clearCart())
+      .then(r => {
+        navigation.navigate("Purchases")
+        rootStore.clearCart()
+      })
   }
 
   render() {

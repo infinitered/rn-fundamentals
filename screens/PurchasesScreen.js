@@ -14,7 +14,11 @@ export class Purchases extends React.Component {
 
   async fetchPurchases() {
     const { userId } = this.props.rootStore
-    const resp = await fetch(`http://localhost:2403/purchases?userId=${userId}`)
+    const resp = await fetch("http://localhost:2403/purchases", {
+      headers: {
+        Authorization: userId
+      }
+    })
     const response = await resp.json()
     const purchases = response.map(r => r.purchasedPosts).flat() // to combine nested arrays into one purchases array
     this.setState({ purchases })
@@ -33,6 +37,9 @@ export class Purchases extends React.Component {
       return (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <Text>You have purchased any posts yet</Text>
+          <Footer>
+            <Button onPress={this.handleLogout} text="Logout" />
+          </Footer>
         </View>
       )
     }
