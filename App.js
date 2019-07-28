@@ -9,10 +9,8 @@ const AppStack = createStackNavigator(
     Camp: CampDetailsScreen
   },
   {
-    defaultNavigationOptions: () => {
-      return {
-        headerTitle: "CampMinder"
-      }
+    defaultNavigationOptions: {
+      headerTitle: "CampMinder"
     }
   }
 )
