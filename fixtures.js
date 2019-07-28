@@ -1,4 +1,4 @@
-const camps = [
+const CAMPS = [
   {
     name: "By the Lake Camp",
     imageUrl: "https://frostvalley.org/wp-content/uploads/2014/10/Cabin-Teen-1024x653.jpg",
@@ -30,4 +30,4 @@ const camps = [
   }
 ]
 
-export { camps }
+export { CAMPS }
