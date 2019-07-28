@@ -25,7 +25,7 @@ class Feed extends React.Component {
   }
 
   async fetchPosts() {
-    const resp = await fetch("http://localhost:2403/posts")
+    const resp = await fetch("https://campminder-training-api.herokuapp.com/posts")
     const posts = await resp.json()
     this.setState({ posts })
   }

@@ -13,7 +13,7 @@ export class CampDetailsScreen extends React.Component {
   }
 
   async fetchCamp(campId) {
-    const resp = await fetch(`http://localhost:2403/camps/${campId}`)
+    const resp = await fetch(`https://campminder-training-api.herokuapp.com/camps/${campId}`)
     const camp = await resp.json()
     this.setState({ camp })
   }

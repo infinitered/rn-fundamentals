@@ -14,7 +14,7 @@ export class Purchases extends React.Component {
 
   async fetchPurchases() {
     const { userId } = this.props.rootStore
-    const resp = await fetch("http://localhost:2403/purchases", {
+    const resp = await fetch("https://campminder-training-api.herokuapp.com/purchases", {
       headers: {
         Authorization: userId
       }
@@ -25,7 +25,7 @@ export class Purchases extends React.Component {
   }
 
   handleLogout = () => {
-    fetch("http://localhost:2403/parents/logout")
+    fetch("https://campminder-training-api.herokuapp.com/parents/logout")
     AsyncStorage.clear()
     this.props.navigation.navigate("Camps")
   }

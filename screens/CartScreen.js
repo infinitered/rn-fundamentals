@@ -7,7 +7,7 @@ class Cart extends React.Component {
   handleCheckout = post => {
     const { navigation, rootStore } = this.props
     const { userId, cartItems } = rootStore
-    fetch("http://localhost:2403/purchases", {
+    fetch("https://campminder-training-api.herokuapp.com/purchases", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

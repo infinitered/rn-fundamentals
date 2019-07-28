@@ -16,7 +16,7 @@ export class SignUp extends React.Component {
     const { setUserId } = rootStore
     const { email, password, parentName, childName } = this.state
     const campId = navigation.getParam("campId")
-    fetch("http://localhost:2403/parents", {
+    fetch("https://campminder-training-api.herokuapp.com/parents", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

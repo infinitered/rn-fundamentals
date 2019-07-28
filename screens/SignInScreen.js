@@ -21,7 +21,7 @@ export class SignIn extends React.Component {
   handleSignIn = () => {
     const { email, password } = this.state
     const { setUserId } = this.props.rootStore
-    fetch("http://localhost:2403/parents/login", {
+    fetch("https://campminder-training-api.herokuapp.com/parents/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

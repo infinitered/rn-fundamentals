@@ -23,7 +23,7 @@ class CampList extends React.Component {
   }
 
   async fetchCamps() {
-    const resp = await fetch("http://localhost:2403/camps")
+    const resp = await fetch("https://campminder-training-api.herokuapp.com/camps")
     const camps = await resp.json()
     this.setState({ camps })
   }
