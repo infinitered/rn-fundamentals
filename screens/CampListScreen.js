@@ -45,6 +45,12 @@ export class CampListScreen extends React.Component {
           numColumns={2}
           showsVerticalScrollIndicator={false}
         />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.props.navigation.navigate("Login")}
+        >
+          <Text style={styles.buttonText}>LOGIN</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     )
   }
@@ -54,5 +60,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff"
+  },
+  button: {
+    height: 50,
+    width: 200,
+    backgroundColor: "teal",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold"
   }
 })
