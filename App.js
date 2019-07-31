@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { View, Text } from "react-native"
 import { createSwitchNavigator, createAppContainer, createStackNavigator } from "react-navigation"
 import { CampListScreen } from "./screens/CampListScreen"
 import { CampDetailsScreen } from "./screens/CampDetailsScreen"
@@ -18,8 +18,16 @@ const InitialStack = createStackNavigator(
   }
 )
 
+const tempScreen = screenName => () => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text style={{ fontSize: 40 }}>{screenName}Screen</Text>
+    </View>
+  )
+}
+
 const HomeStack = createStackNavigator({
-  Temp: () => <View style={{ flex: 1, backgroundColor: "green" }} />
+  Tabs: tempScreen("Tabs")
 })
 
 const AppStack = createSwitchNavigator({
