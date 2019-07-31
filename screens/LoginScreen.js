@@ -1,8 +1,9 @@
 import React from "react"
 import { SafeAreaView, StyleSheet, Text } from "react-native"
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler"
+import { observer, inject } from "mobx-react"
 
-export class LoginScreen extends React.Component {
+class Login extends React.Component {
   static navigationOptions = {
     headerTitle: "Login"
   }
@@ -94,3 +95,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 })
+
+export const LoginScreen = inject("rootStore")(observer(Login))

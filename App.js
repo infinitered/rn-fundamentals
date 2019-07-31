@@ -10,6 +10,10 @@ import { CampListScreen } from "./screens/CampListScreen"
 import { CampDetailsScreen } from "./screens/CampDetailsScreen"
 import { LoginScreen } from "./screens/LoginScreen"
 import { FeedScreen } from "./screens/FeedScreen"
+import { Store } from "./store"
+import { Provider } from "mobx-react"
+
+const rootStore = Store.create()
 
 const tempScreen = screenName => () => {
   return (
@@ -42,4 +46,14 @@ const AppStack = createSwitchNavigator({
   Home: HomeStack
 })
 
-export default createAppContainer(AppStack)
+const AppContainer = createAppContainer(AppStack)
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider rootStore={rootStore}>
+        <AppContainer />
+      </Provider>
+    )
+  }
+}

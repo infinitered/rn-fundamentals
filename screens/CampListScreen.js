@@ -8,8 +8,9 @@ import {
   Image,
   Text
 } from "react-native"
+import { observer, inject } from "mobx-react"
 
-export class CampListScreen extends React.Component {
+class CampList extends React.Component {
   state = { camps: [] }
 
   componentDidMount() {
@@ -75,3 +76,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   }
 })
+
+export const CampListScreen = inject("rootStore")(observer(CampList))
