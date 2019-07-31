@@ -8,7 +8,6 @@ import {
   Image,
   Text
 } from "react-native"
-import { CAMPS } from "../fixtures"
 
 export class CampListScreen extends React.Component {
   state = { camps: [] }
@@ -17,8 +16,10 @@ export class CampListScreen extends React.Component {
     this.fetchCamps()
   }
 
-  fetchCamps = () => {
-    this.setState({ camps: CAMPS })
+  fetchCamps = async () => {
+    const resp = await fetch("https://campminder-training-api.herokuapp.com/camps")
+    const camps = await resp.json()
+    this.setState({ camps })
   }
   render() {
     const { camps } = this.state

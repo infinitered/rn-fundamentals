@@ -8,8 +8,8 @@ export class LoginScreen extends React.Component {
   }
 
   state = {
-    username: "",
-    password: ""
+    username: "fvonhoven@gmail.com",
+    password: "12345678"
   }
 
   setInput = (type, value) => {
@@ -20,7 +20,22 @@ export class LoginScreen extends React.Component {
     const { username, password } = this.state
     const hasValidation = username.length > 0 && password.length > 0
     if (hasValidation) {
-      this.props.navigation.navigate("Home")
+      fetch("https://campminder-training-api.herokuapp.com/parents/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }).then(response => {
+        if (response.ok) {
+          this.props.navigation.navigate("Home")
+        } else {
+          alert("Problem logging in")
+        }
+      })
     } else {
       alert("Complete all fields")
     }
@@ -33,6 +48,8 @@ export class LoginScreen extends React.Component {
         <TextInput
           value={username}
           style={styles.input}
+          autoCapitalize="none"
+          autoFocus
           placeholder="username"
           onChangeText={value => this.setInput("username", value)}
         />
