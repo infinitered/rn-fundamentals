@@ -10,6 +10,7 @@ import { CampListScreen } from "./screens/CampListScreen"
 import { CampDetailsScreen } from "./screens/CampDetailsScreen"
 import { LoginScreen } from "./screens/LoginScreen"
 import { FeedScreen } from "./screens/FeedScreen"
+import { CartScreen } from "./screens/CartScreen"
 import { Store } from "./store"
 import { Provider } from "mobx-react"
 
@@ -38,7 +39,7 @@ const InitialStack = createStackNavigator(
 
 const HomeStack = createBottomTabNavigator({
   Feed: FeedScreen,
-  Cart: tempScreen("Cart")
+  Cart: CartScreen
 })
 
 const AppStack = createSwitchNavigator({
