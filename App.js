@@ -6,7 +6,14 @@ import {
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation"
-import { CampListScreen, CampDetailsScreen, LoginScreen, FeedScreen, CartScreen } from "./screens"
+import {
+  CampListScreen,
+  CampDetailsScreen,
+  LoginScreen,
+  FeedScreen,
+  CartScreen,
+  PurchasesScreen
+} from "./screens"
 import { Store } from "./store"
 import { Provider } from "mobx-react"
 
@@ -35,7 +42,8 @@ const InitialStack = createStackNavigator(
 
 const HomeStack = createBottomTabNavigator({
   Feed: FeedScreen,
-  Cart: CartScreen
+  Cart: CartScreen,
+  Purchases: PurchasesScreen
 })
 
 const AppStack = createSwitchNavigator({
