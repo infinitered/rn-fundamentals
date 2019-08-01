@@ -1,7 +1,6 @@
 import React from "react"
 import { createAppContainer, createStackNavigator } from "react-navigation"
-import { CampListScreen } from "./screens/CampListScreen"
-import { CampDetailsScreen } from "./screens/CampDetailsScreen"
+import { CampListScreen, CampDetailsScreen } from "./screens"
 
 const AppStack = createStackNavigator(
   {
