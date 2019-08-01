@@ -1,9 +1,7 @@
 import React from "react"
 import { View, Text } from "react-native"
 import { createSwitchNavigator, createAppContainer, createStackNavigator } from "react-navigation"
-import { CampListScreen } from "./screens/CampListScreen"
-import { CampDetailsScreen } from "./screens/CampDetailsScreen"
-import { LoginScreen } from "./screens/LoginScreen"
+import { CampListScreen, CampDetailsScreen, LoginScreen } from "./screens"
 
 const InitialStack = createStackNavigator(
   {
