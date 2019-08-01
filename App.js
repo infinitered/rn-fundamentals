@@ -6,10 +6,13 @@ import {
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation"
-import { CampListScreen } from "./screens/CampListScreen"
-import { CampDetailsScreen } from "./screens/CampDetailsScreen"
-import { LoginScreen } from "./screens/LoginScreen"
-import { FeedScreen } from "./screens/FeedScreen"
+import {
+  CampListScreen,
+  CampDetailsScreen,
+  CampDetailsScreen,
+  LoginScreen,
+  FeedScreen
+} from "./screens"
 import { Store } from "./store"
 import { Provider } from "mobx-react"
 
